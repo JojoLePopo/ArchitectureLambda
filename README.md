@@ -109,9 +109,3 @@ python Log_Simulate.py
 
 - Joseph Destat Guillot
 - Thomas Coutarel
-
----
-
-## Licence
-
-Ce projet est sous licence MIT.
