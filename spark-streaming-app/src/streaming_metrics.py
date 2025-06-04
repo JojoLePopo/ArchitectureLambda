@@ -3,11 +3,9 @@ from pyspark.sql.functions import from_json, col, count, to_timestamp, window, s
 from pyspark.sql.types import StructType, StructField, StringType
 import os
 
-# Chemin absolu vers le dossier TPSPARK
 base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 parent_path = os.path.dirname(base_path)
 
-# Chemins absolus pour les métriques
 metrics_paths = {
     "raw_data": os.path.join(parent_path, "data/raw"),
     "ip_counts": os.path.join(parent_path, "data/metrics/connections_by_ip"),
@@ -32,7 +30,6 @@ def create_streaming_dataframe(spark):
         .option("startingOffsets", "earliest") \
         .load()
 
-    # Parsing CSV pur avec gestion des virgules dans les guillemets
     df = df_raw.selectExpr("CAST(value AS STRING) as csv_str") \
         .withColumn("fields", split(col("csv_str"), ",(?=(?:[^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)")) \
         .select(
@@ -108,7 +105,6 @@ def main():
         df = create_streaming_dataframe(spark)
         queries = setup_streaming_queries(df)
         
-        # Attendre la terminaison de toutes les queries
         for query in queries:
             query.awaitTermination()
             

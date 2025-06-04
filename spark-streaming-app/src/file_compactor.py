@@ -12,16 +12,12 @@ def compact_parquet_files(spark, input_path, output_path, tmp_path):
     """
     Lit tous les fichiers Parquet d'un dossier et les réécrit en un nombre réduit de fichiers
     """
-    # Lire tous les fichiers Parquet du dossier
     df = spark.read.parquet(input_path)
     
-    # Repartitionner en un nombre raisonnable de fichiers (ajuster selon vos besoins)
     num_partitions = 4
     
-    # Écrire dans un dossier temporaire
     df.repartition(num_partitions).write.mode("overwrite").parquet(tmp_path)
     
-    # Supprimer l'ancien dossier et renommer le nouveau
     spark._jvm.org.apache.hadoop.fs.FileUtil.delete(
         spark._jvm.java.io.File(output_path), True)
     os.rename(tmp_path, output_path)
@@ -63,7 +59,7 @@ def process_metrics_folders(spark, base_paths):
             except Exception as e:
                 print(f"Erreur lors du compactage JSON de {input_path}: {str(e)}")
 
-def main():    # Chemins des dossiers à compacter
+def main():
     base_paths = [
         "C:/Users/potet/Documents/DATALAKEAPI/TPSPARK/data/streaming",
         "C:/Users/potet/Documents/DATALAKEAPI/TPSPARK/data/batch"

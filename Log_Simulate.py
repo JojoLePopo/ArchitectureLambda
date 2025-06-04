@@ -4,16 +4,12 @@ import random
 import json
 from datetime import datetime
 
-# Topic Kafka pour les logs
 topic_name = 'transaction_log'
 
-# Configuration du producteur Kafka
 producer = KafkaProducer(
     bootstrap_servers=['localhost:9092']
-    # PAS de value_serializer ici, car on envoie déjà des bytes
 )
 
-# Liste d'User-Agents pour la simulation
 user_agents = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)",
@@ -30,7 +26,6 @@ def generate_log():
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     ip = generate_ip()
     user_agent = random.choice(user_agents)
-    # Format CSV pur
     return f'{timestamp},{ip},"{user_agent}"'
 
 if __name__ == '__main__':
@@ -40,7 +35,7 @@ if __name__ == '__main__':
             log_entry = generate_log()
             producer.send(topic_name, log_entry.encode('utf-8'))
             print(f"Log envoyé: {log_entry}")
-            time.sleep(random.uniform(1, 3))  # Pause aléatoire entre 1 et 3 secondes
+            time.sleep(random.uniform(1, 3)) 
             
         except Exception as e:
             print(f"Erreur: {e}")

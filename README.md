@@ -39,17 +39,6 @@ data
 │   └── daily_counts/
 └── ...                         # Autres dossiers/checkpoints générés par Spark
 ```
----
-
-## Prérequis
-
-- Python 3.8+
-- Apache Spark 3.5.x
-- Kafka en local (topic `transaction_log` créé)
-- Java 8 ou 11
-
----
-
 ## Installation
 
 1. **Cloner le dépôt :**
